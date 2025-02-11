@@ -27,9 +27,9 @@ forgiveBtn.addEventListener("click", () => {
         kittenImg.src = kittens[moveCount].img;
         kittenMessage.textContent = kittens[moveCount].msg;
 
-        // Move button to a random position on the screen
-        let randomX = Math.random() * (window.innerWidth - 100) + "px";
-        let randomY = Math.random() * (window.innerHeight - 100) + "px";
+        // Move button to a random position
+        let randomX = Math.random() * (window.innerWidth - 150) + "px";
+        let randomY = Math.random() * (window.innerHeight - 150) + "px";
 
         forgiveBtn.style.position = "absolute";
         forgiveBtn.style.left = randomX;
@@ -37,13 +37,18 @@ forgiveBtn.addEventListener("click", () => {
 
         moveCount++;
     } else {
-        forgiveBtn.style.position = "static"; // Stop moving
-        forgiveBtn.style.margin = "20px auto"; // Center the button
+        // Stop moving and change text for final click
+        forgiveBtn.style.position = "static";
+        forgiveBtn.style.margin = "20px auto";
         forgiveBtn.textContent = "Fine, tap me.";
-        forgiveBtn.removeEventListener("click", arguments.callee);
-        forgiveBtn.addEventListener("click", () => {
-            forgiveBtn.style.display = "none"; // Hide button
-            messageDiv.classList.remove("hidden"); // Show message
+        
+        // Remove the current event listener and add the final one
+        forgiveBtn.replaceWith(forgiveBtn.cloneNode(true));
+        const newForgiveBtn = document.getElementById("forgive-btn");
+
+        newForgiveBtn.addEventListener("click", () => {
+            newForgiveBtn.style.display = "none"; // Hide button
+            messageDiv.classList.remove("hidden"); // Show final message
         });
     }
 });
