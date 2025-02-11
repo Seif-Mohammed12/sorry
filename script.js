@@ -5,7 +5,7 @@ const kittenMessage = document.getElementById("kitten-message");
 
 let moveCount = 0;
 
-// Different kittens & messages for each dodge
+// Different kittens & messages for each tap
 const kittens = [
     {
         img: "https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif",
@@ -21,24 +21,29 @@ const kittens = [
     }
 ];
 
-forgiveBtn.addEventListener("mouseover", () => {
+forgiveBtn.addEventListener("click", () => {
     if (moveCount < kittens.length) {
         // Change kitten and message
         kittenImg.src = kittens[moveCount].img;
         kittenMessage.textContent = kittens[moveCount].msg;
 
-        // Move button to random location
-        let randomX = Math.random() * 200 - 100; 
-        let randomY = Math.random() * 200 - 100; 
+        // Move button to a random position on the screen
+        let randomX = Math.random() * (window.innerWidth - 100) + "px";
+        let randomY = Math.random() * (window.innerHeight - 100) + "px";
 
-        forgiveBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        forgiveBtn.style.position = "absolute";
+        forgiveBtn.style.left = randomX;
+        forgiveBtn.style.top = randomY;
+
         moveCount++;
     } else {
-        forgiveBtn.style.transform = "none"; // Stop moving
+        forgiveBtn.style.position = "static"; // Stop moving
+        forgiveBtn.style.margin = "20px auto"; // Center the button
+        forgiveBtn.textContent = "Fine, tap me.";
+        forgiveBtn.removeEventListener("click", arguments.callee);
+        forgiveBtn.addEventListener("click", () => {
+            forgiveBtn.style.display = "none"; // Hide button
+            messageDiv.classList.remove("hidden"); // Show message
+        });
     }
-});
-
-forgiveBtn.addEventListener("click", () => {
-    forgiveBtn.style.display = "none"; // Hide button
-    messageDiv.classList.remove("hidden"); // Show message
 });
